@@ -1,0 +1,133 @@
+%%[
+VAR @id, @processURL, @errorURL, @hasError, @rs, @email, @subStatus
+SET @id = _subscriberKey
+SET @email = emailaddr
+
+SET @errorURL = CloudPagesURL(34)
+SET @processURL = CloudPagesURL(35)
+
+IF EMPTY(@id) THEN
+    SET @hasError = "1"
+ELSE
+        Set @retrieveReq= CreateObject("RetrieveRequest")
+        SetObjectProperty(@retrieveReq,"ObjectType","Subscriber")
+        AddObjectArrayItem(@retrieveReq,"Properties","SubscriberKey")
+        AddObjectArrayItem(@retrieveReq,"Properties","Status")
+
+        Set @sf1 = CreateObject("SimpleFilterPart")
+        SetObjectProperty(@sf1,"Property","SubscriberKey")
+        SetObjectProperty(@sf1,"SimpleOperator","equals")
+        AddObjectArrayItem(@sf1,"Value",@id) 
+
+        Output(Concat("EmailAddress: ", emailaddr))
+        Output(Concat("SubKey: ", _subscriberKey))
+        
+
+        
+        SetObjectProperty(@retrieveReq,"Filter",@sf1)
+
+        VAR @status
+        SET @srows = InvokeRetrieve(@retrieveReq, @status)
+        Output(Concat("status retrieved", "mhm"))
+            IF RowCount(@srows) > 0 THEN
+            FOR @j = 1 to RowCount(@srows) DO
+                SET @subStatus = FIELD(@srow, "Status")
+                Output(Concat("status: ", @subStatus))
+            NEXT @j
+        ENDIF
+        
+ENDIF
+
+
+]%%
+<!DOCTYPE html>
+<html>
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+ <style class="main_style">
+input[type="email"] { padding: 5px; width: 300px; font-size: 14px !important; }
+.submit-button { padding: 15px; background-color: #DB4D69; border: 0px; color: #FFFFFF; font-weight: bold; font-size: 16px; text-transform: uppercase; }
+label { color: #294754; }
+hr { display: block; margin: 0.5em auto; border-style: inset; border-width: 0.5px; border-color: #0099D7; }
+.std-pad-top { padding-top: 30px; }
+.std-pad-bottom { padding-bottom: 50px; }
+.container { background-color: #FFFFFF !important; }
+.layout-canvas-g { background-color: #FFFFFF; border: 0px solid transparent; box-sizing: border-box; padding: 0px; width: 100%; }
+.layout-canvas-g > .header, .layout-canvas-g > .section, .layout-canvas-g > .footer { position: relative; overflow: hidden; width: 100%; overflow-wrap: break-word; }
+.layout-canvas-g > .section { margin: 10px 0px; }
+.layout-canvas-g > .section > .columns { box-sizing: border-box; overflow-wrap: break-word; }
+body { color: #808080; font-family: Arial; font-size: 16px; margin: 0px auto; max-width: 1280px; background-color: #E4E4E4; line-height: 1; padding: 0px; }
+@media only screen and (max-width: 480px) {
+  .mobile-hidden { display: none !important; }
+  .responsive-td { width: 100% !important; display: block !important; padding: 0px !important; }
+}
+.layout-canvas-g > .section > .columns { width: 100%; }
+h1 { font-family: Arial; font-size: 28px; color: #202020; line-height: 1; font-weight: bold; font-style: normal; }
+h2 { font-family: Arial; font-size: 22px; color: #202020; line-height: 1; font-weight: bold; font-style: normal; }
+h3 { font-family: Arial; font-size: 20px; color: #202020; line-height: 1; font-weight: bold; font-style: normal; }
+a[href]:not(.buttonstyles) { color: #0000EE; text-decoration: none; }
+button.buttonblock { color: #FFFFFF; border-radius: 3px; background-color: #5D5D5D; }
+td.buttonblock { color: #FFFFFF; border-radius: 3px; }
+a.buttonstyles { font-family: Arial; font-size: 16px; color: #FFFFFF; background-color: #5D5D5D; padding: 10px; }
+@media only screen and (max-width:480px){
+/* MOBILE GLOBAL STYLES - DO NOT CHANGE */
+body, .tb_properties{font-family: Arial !important; font-size: 16px !important; color: #808080 !important; line-height: 1 !important; padding: 0px !important; }.buttonstyles{font-family: Arial !important; font-size: 16px !important; color: #FFFFFF !important; padding: 0px !important; }h1{font-family: Arial !important; font-size: 22px !important; color: #202020 !important; line-height: 1 !important; }h2{font-family: Arial !important; font-size: 20px !important; color: #202020 !important; line-height: 1 !important; }h3{font-family: Arial !important; font-size: 18px !important; color: #202020 !important; line-height: 1 !important; }a:not(.buttonstyles){line-height: 1 !important; }.mobile-hidden{display: none !important; }.responsive-td {width: 100% !important; display: block !important; padding: 0 !important;}
+/* END OF MOBILE GLOBAL STYLES - DO NOT CHANGE */
+}</style>
+</head>
+ <body>
+   <div class="layout layout-canvas-g">
+     <div>
+       <div style="background-color:#294754;padding:20px 25px;">
+         <div> 
+           <img src="https://image.s50.sfmc-content.com/lib/fe37117075640474721473/m/1/a9063717-93fd-4c44-8cdf-3ca7ccc27b9c.png" href="https://www.yit.fi/" width="130">
+         </div>
+       </div>
+     </div>
+     <div class="container std-pad-top">
+       <div class="row">
+         <div class="col-md-12">
+           <p style="color:#294754;">Ik&auml;v&auml;&auml;, ett&auml; olet l&auml;hd&ouml;ss&auml;! Olet aina tervetullut takaisin saamaan tietoa uusista YIT Kodeista - unelmiesi koti voi olla yhden s&auml;hk&ouml;postin p&auml;&auml;ss&auml;.<br>
+             <br>
+             <span style="font-size:14px;color:#294754;">Huomioithan, ett&auml; perumalla tilauksen, peruutat kaikki YIT:n asumista koskevat markkinointiviestit.</span>
+           </p>
+         </div>
+       </div>
+       <hr>
+     </div>
+     <div class="container std-pad-top std-pad-bottom">
+       <div class="row">
+         <div class="col-md-12">
+           
+           <form class="form" action="%%=CloudPagesURL(35,'id',_subscriberkey)=%%" method="post">
+             <label>
+               Sähköposti<br><br>
+               <input type="email" name="email" data-field-type="EmailAddress" data-validation="email" value="%%=v(email)=%%" required/>
+             </label><br><br>
+             <label value="test">
+               <input type="checkbox" id="aeM" name="alloweMarketing" required="true"/>
+               En halua vastaanottaa sähköpostimarkkinointia
+             </label><br><br>
+             <input class="submit-button" type="submit" value="Peru tilaus"/>
+           </form>
+           
+         </div>
+       </div>
+     </div>
+     <div>
+       <div style="background-color:#294754;height:80px;">
+       </div>
+     </div>
+   </div>
+   %%[IF @subStatus == 'Active' THEN ]%%
+   <script>
+     document.getElementById("aeM").checked =true;
+   </script> 
+   %%[
+   ENDIF
+   ]%%
+ </body>
+</html>
